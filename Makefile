@@ -1,0 +1,37 @@
+CC := gcc
+CFLAGS := -Wall -Wextra -g
+BUILD_DIR := build
+
+LIB_SOURCES := src/rdsp.c
+LIB_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(LIB_SOURCES))
+LIB_ONLY_NAME := librdsp.a
+LIB_NAME := $(BUILD_DIR)/$(LIB_ONLY_NAME)
+
+TEST_SOURCES := test/test.c
+TEST_OBJECTS := $(patsubst test/%.c,$(BUILD_DIR)/%.o,$(TEST_SOURCES))
+TEST_EXECUTABLE := $(BUILD_DIR)/dsp
+
+EXTERNAL_LIBS := portaudio
+
+all: $(LIB_NAME) $(TEST_EXECUTABLE)
+
+$(LIB_NAME): $(LIB_OBJECTS)
+	ar rcs $@ $^
+
+$(TEST_EXECUTABLE): $(TEST_OBJECTS) $(LIB_NAME)
+	$(CC) $(CFLAGS) -o $@ $^ -L$(BUILD_DIR) -l:$(LIB_ONLY_NAME) -l$(EXTERNAL_LIBS)
+
+$(BUILD_DIR)/%.o: src/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c -o  $@ $< -Iinclude -l$(EXTERNAL_LIBS)
+
+$(BUILD_DIR)/%.o: test/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c -o $@ $< -Iinclude
+
+$(BUILD_DIR):
+	mkdir -p $@
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+.PHONY: all clean
+
