@@ -2,7 +2,7 @@ CC := gcc
 CFLAGS := -Wall -Wextra -g
 BUILD_DIR := build
 
-LIB_SOURCES := src/rdsp.c
+LIB_SOURCES := src/rdsp.c src/generator.c src/stream.c
 LIB_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(LIB_SOURCES))
 LIB_ONLY_NAME := librdsp.a
 LIB_NAME := $(BUILD_DIR)/$(LIB_ONLY_NAME)
@@ -11,8 +11,7 @@ TEST_SOURCES := test/test.c
 TEST_OBJECTS := $(patsubst test/%.c,$(BUILD_DIR)/%.o,$(TEST_SOURCES))
 TEST_EXECUTABLE := $(BUILD_DIR)/dsp
 
-EXTERNAL_LIBS := -lportaudio -lrt -lm -lasound -ljack -pthread
-
+EXTERNAL_LIBS := -pthread 
 all: $(LIB_NAME) $(TEST_EXECUTABLE)
 
 run: $(TEST_EXECUTABLE)
