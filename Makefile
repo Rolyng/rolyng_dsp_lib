@@ -11,18 +11,21 @@ TEST_SOURCES := test/test.c
 TEST_OBJECTS := $(patsubst test/%.c,$(BUILD_DIR)/%.o,$(TEST_SOURCES))
 TEST_EXECUTABLE := $(BUILD_DIR)/dsp
 
-EXTERNAL_LIBS := portaudio
+EXTERNAL_LIBS := -lportaudio -lrt -lm -lasound -ljack -pthread
 
 all: $(LIB_NAME) $(TEST_EXECUTABLE)
+
+run: $(TEST_EXECUTABLE)
+	./$(TEST_EXECUTABLE)
 
 $(LIB_NAME): $(LIB_OBJECTS)
 	ar rcs $@ $^
 
 $(TEST_EXECUTABLE): $(TEST_OBJECTS) $(LIB_NAME)
-	$(CC) $(CFLAGS) -o $@ $^ -L$(BUILD_DIR) -l:$(LIB_ONLY_NAME) -l$(EXTERNAL_LIBS)
+	$(CC) $(CFLAGS) -o $@ $^ -L$(BUILD_DIR) -l:$(LIB_ONLY_NAME) $(EXTERNAL_LIBS)
 
 $(BUILD_DIR)/%.o: src/%.c | $(BUILD_DIR)
-	$(CC) $(CFLAGS) -c -o  $@ $< -Iinclude -l$(EXTERNAL_LIBS)
+	$(CC) $(CFLAGS) -c -o  $@ $< -Iinclude $(EXTERNAL_LIBS)
 
 $(BUILD_DIR)/%.o: test/%.c | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c -o $@ $< -Iinclude
