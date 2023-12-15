@@ -11,7 +11,7 @@ TEST_SOURCES := test/test.c
 TEST_OBJECTS := $(patsubst test/%.c,$(BUILD_DIR)/%.o,$(TEST_SOURCES))
 TEST_EXECUTABLE := $(BUILD_DIR)/dsp
 
-EXTERNAL_LIBS := -pthread 
+EXTERNAL_LIBS := -pthread -lm
 all: $(LIB_NAME) $(TEST_EXECUTABLE)
 
 run: $(TEST_EXECUTABLE)
