@@ -29,5 +29,6 @@ int run(int argc, char *argv[]) {
 		printf("Sample %lu = %f\n", i, res.samples[i]);
 	}
 
+    freeStream(&res);
 	return 0;
 }
