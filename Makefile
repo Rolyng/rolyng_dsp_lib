@@ -35,5 +35,8 @@ $(BUILD_DIR):
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: all clean
+format:
+	clang-format -i src/* include/* test/*
+
+.PHONY: all clean format
 
