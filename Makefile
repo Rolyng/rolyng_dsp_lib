@@ -2,7 +2,7 @@ CC := gcc
 CFLAGS := -Wall -Wextra -g
 BUILD_DIR := build
 
-LIB_SOURCES := src/rdsp.c src/generator.c src/stream.c
+LIB_SOURCES := src/rdsp.c src/generator.c src/stream.c src/util.c
 LIB_OBJECTS := $(patsubst src/%.c,$(BUILD_DIR)/%.o,$(LIB_SOURCES))
 LIB_ONLY_NAME := librdsp.a
 LIB_NAME := $(BUILD_DIR)/$(LIB_ONLY_NAME)
