@@ -1,10 +1,9 @@
 #include "stream.h"
+#include "types.h"
 
 struct dft_comp{
-    double freq;
-    double imag;
-    double real;
-    double phase;
+    frequency freq;
+    complex double ampl;
 };
 
 struct dft_res{

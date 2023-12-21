@@ -24,13 +24,13 @@ int run(int argc, char *argv[]) {
 		printf("Error char - %s", endptr);
 		return 1;
 	}
-	struct signalComp sine = {.amplitude = 1,
+	struct contSigComp sine = {.amplitude = 1,
 			.freq = 1000,
 			.sineWave.phase = 0,
 			.type = COMP_SINE,
 			.next = NULL};
-	struct signalComp cosine = {.amplitude = 0.5, .freq = 2000, .sineWave.phase = M_PI_4*3, .type = COMP_SINE,};
-	struct signal sig = {0};
+	struct contSigComp cosine = {.amplitude = 0.5, .freq = 2000, .sineWave.phase = M_PI_4*3, .type = COMP_SINE,};
+	struct continuouSignal sig = {0};
 	gen_addComp(&sig, &sine);
 	gen_addComp(&sig, &cosine);
 	struct stream res = gen_samplePeriod(&sig, sampleFreq);

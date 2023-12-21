@@ -9,8 +9,9 @@ struct dft_res dft(struct stream in, uint64_t sampleFreq, uint32_t numberOfPoint
      res.comp = (struct dft_comp *) malloc(sizeof(struct dft_comp) * numberOfPoints);
 
      for(unsigned m = 0; m < numberOfPoints; m++){
+         double xm = 0;
         for(unsigned n = 0; n < numberOfPoints; n++){
-
+            xm +=  
         } 
      }
 
