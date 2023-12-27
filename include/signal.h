@@ -1,8 +1,8 @@
 #pragma once
 
 #include "stream.h"
+#include <complex.h>
 #include <stdint.h>
-#include "types.h"
 
 enum contSigCompType {
     COMP_SINE,
@@ -14,7 +14,7 @@ enum contSigCompType {
 
 struct contSigComp {
     double amplitude;
-    frequency freq;
+    complex double freq;
     union {
         struct {
             double phase;
@@ -33,7 +33,8 @@ struct contSigComp {
 
 struct contSig {
     struct contSigComp *frComps;
-    frequency freq;
+    //TODO do it like Maybe from Haskell
+    complex double freq;
 };
 
 void addComp(struct contSig *sig, struct contSigComp *comp);

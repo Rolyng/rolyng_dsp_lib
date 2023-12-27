@@ -1,11 +1,11 @@
 #pragma once
 
+#include <complex.h>
 #include <stdint.h>
-#include "types.h"
 
 struct stream {
-    frequency sampleFreq;
-    double* samples;
+    complex double sampleFreq;
+    complex double* samples;
     uint32_t size;
 };
 

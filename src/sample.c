@@ -3,7 +3,6 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "types.h"
 #include "util.h"
 
 double calcComponent(struct contSigComp *comp, double time) {
@@ -50,15 +49,18 @@ double gen_sample(struct contSig *sig, double time) {
 
 /* When sampling there will be some number of samples until they start repeating
 so this function does that. it samples for one such period. */
-struct stream gen_samplePeriod(struct contSig *sig, frequency sampleFreq) {
+struct stream gen_samplePeriod(struct contSig *sig, complex double sampleFreq) {
     struct stream res;
     if (sampleFreq == 0 || sig->freq == 0) {
         res.size = 1;
-    } else {
+    //trunc(NAN) is not equal to NAN. not sure if it's well-defined behavior or not
+    } else if(trunc(sampleFreq) == sampleFreq && trunc(sig->freq) == sig->freq){
         //is this right???
         res.size = sampleFreq / gcd(sampleFreq, sig->freq);
+    }else{
+        return gen_sampleDuration(sig, sampleFreq, 1.0);
     }
-    res.samples = (double *)malloc(sizeof(double) * res.size);
+    res.samples = (complex double *)malloc(sizeof(complex double) * res.size);
     double samplePeriod = 1.0 / sampleFreq;
 
     for (uint64_t i = 0; i < res.size; i++) {
@@ -69,7 +71,7 @@ struct stream gen_samplePeriod(struct contSig *sig, frequency sampleFreq) {
     return res;
 }
 
-struct stream gen_sampleDuration(struct contSig *sig, frequency sampleFreq, double duration) {
+struct stream gen_sampleDuration(struct contSig *sig, complex double sampleFreq, double duration) {
     struct stream res;
     double samplePeriod;
     if (duration <= 0) {
@@ -84,7 +86,7 @@ struct stream gen_sampleDuration(struct contSig *sig, frequency sampleFreq, doub
         samplePeriod = 1.0 / sampleFreq;
         res.size = duration / samplePeriod;
     }
-    res.samples = (double *)malloc(sizeof(double) * res.size);
+    res.samples = (complex double *)malloc(sizeof(complex double) * res.size);
 
     for (uint64_t i = 0; i < res.size; i++) {
         res.samples[i] = gen_sample(sig, samplePeriod * i);
@@ -94,8 +96,3 @@ struct stream gen_sampleDuration(struct contSig *sig, frequency sampleFreq, doub
     return res;
 }
 
-void gen_addComp(struct contSig *sig, struct contSigComp *comp) {
-    comp->next = sig->frComps;
-    sig->frComps = comp;
-    sig->freq = sig->freq ? gcd(sig->freq, comp->freq) : comp->freq;
-}

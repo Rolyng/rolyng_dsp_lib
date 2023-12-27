@@ -1,8 +1,8 @@
+#include <complex.h>
 #include "stream.h"
-#include "types.h"
 
 struct dft_comp {
-    frequency freq;
+    complex double freq;
     complex double ampl;
 };
 
@@ -11,4 +11,17 @@ struct dft_res {
     uint32_t size;
 };
 
-struct dft_res dft(struct stream in, uint32_t N);
+typedef double (*windowFunc) (double, double) ;
+
+enum dft_window{
+    DFT_WINDOW_RECTANGLE=0,
+    DFT_WINDOW_TRIANLE,
+    DFT_WINDOW_HANNING,
+    DFT_WINDOW_HAMMING,
+    DFT_WINDOW_LAST,
+};
+
+struct dft_res dft(struct stream in, uint32_t N, enum dft_window win);
+
+//returns stream AFTER applying window function
+struct stream idft(struct dft_res dft_res);
