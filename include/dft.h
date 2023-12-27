@@ -11,4 +11,4 @@ struct dft_res {
     uint32_t size;
 };
 
-struct dft_res dft(struct stream in, uint64_t sampleFreq, uint32_t numberOfPoints);
+struct dft_res dft(struct stream in, uint32_t N);

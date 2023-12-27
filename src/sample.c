@@ -3,6 +3,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "types.h"
 #include "util.h"
 
 double calcComponent(struct contSigComp *comp, double time) {
@@ -63,11 +64,12 @@ struct stream gen_samplePeriod(struct contSig *sig, frequency sampleFreq) {
     for (uint64_t i = 0; i < res.size; i++) {
         res.samples[i] = gen_sample(sig, samplePeriod * i);
     }
+    res.sampleFreq = sampleFreq;
 
     return res;
 }
 
-struct stream gen_sampleDuration(struct contSig *sig, uint64_t sampleFreq, double duration) {
+struct stream gen_sampleDuration(struct contSig *sig, frequency sampleFreq, double duration) {
     struct stream res;
     double samplePeriod;
     if (duration <= 0) {
@@ -87,6 +89,7 @@ struct stream gen_sampleDuration(struct contSig *sig, uint64_t sampleFreq, doubl
     for (uint64_t i = 0; i < res.size; i++) {
         res.samples[i] = gen_sample(sig, samplePeriod * i);
     }
+    res.sampleFreq = sampleFreq;
 
     return res;
 }

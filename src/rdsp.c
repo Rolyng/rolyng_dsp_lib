@@ -4,29 +4,21 @@
 #include "stdio.h"
 #include <math.h>
 #include <stdlib.h>
+#include <complex.h>
 #include "dft.h"
 
 int run(int argc, char *argv[]) {
-    if (argc < 4) {
+    if (argc < 2) {
         return 1;
     }
     char *endptr = NULL;
-    double sampleFreq = strtod(argv[1], &endptr);
+    double sF = strtod(argv[1], &endptr);
     if (*endptr != '\0') {
         printf("Error char - %s", endptr);
         return 1;
     }
-    double end = strtod(argv[2], &endptr);
-    if (*endptr != '\0') {
-        printf("Error char - %s", endptr);
-        return 1;
-    }
-    double phase = strtod(argv[3], &endptr);
-    if (*endptr != '\0') {
-        printf("Error char - %s", endptr);
-        return 1;
-    }
-    struct contSigComp sine = {.amplitude = 1, .freq = 1000, .sineWave.phase = 0, .type = COMP_SINE, .next = NULL};
+    double complex sampleFreq = sF;
+    struct contSigComp sine = {.amplitude = 1, .freq = 1000, .sineWave.phase = 0, .type = COMP_SINE};
     struct contSigComp sine2 = {
             .amplitude = 0.5,
             .freq = 2000,
@@ -37,7 +29,7 @@ int run(int argc, char *argv[]) {
     addComp(&sig, &sine);
     addComp(&sig, &sine2);
     struct stream res = gen_samplePeriod(&sig, sampleFreq);
-    struct dft_res d = dft(res, sampleFreq, res.size);
+    struct dft_res d = dft(res, res.size);
     for (uint64_t i = 0; i < res.size; i++) {
         printf("Sample %lu = %f\n", i, res.samples[i]);
     }
