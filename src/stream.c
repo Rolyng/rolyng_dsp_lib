@@ -2,5 +2,5 @@
 #include "stdlib.h"
 
 void freeStream(struct stream* stream) {
-	free(stream->samples);
+    free(stream->samples);
 }

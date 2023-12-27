@@ -8,4 +8,4 @@ double gen_sample(struct contSig *sig, double time);
 
 struct stream gen_samplePeriod(struct contSig *sig, frequency sampleFreq);
 
-struct stream gen_sampleDuration(struct contSig *sig, frequency sampleFreq, double duration);
+struct stream gen_sampleDuration(struct contSig *sig, uint64_t sampleFreq, double duration);
