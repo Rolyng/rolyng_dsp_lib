@@ -11,17 +11,20 @@ struct dft_res {
     uint32_t size;
 };
 
-typedef double (*windowFunc) (double, double) ;
+typedef complex double (*windowFunc)(complex double, double);
 
-enum dft_window{
-    DFT_WINDOW_RECTANGLE=0,
-    DFT_WINDOW_TRIANLE,
+enum dft_window {
+    DFT_WINDOW_RECTANGLE = 0,
+    DFT_WINDOW_TRIANGLE,
     DFT_WINDOW_HANNING,
     DFT_WINDOW_HAMMING,
     DFT_WINDOW_LAST,
 };
 
-struct dft_res dft(struct stream in, uint32_t N, enum dft_window win);
+void apply_window(struct stream* in, enum dft_window win);
+
+//have to apply window before calling dft. if no window => rectangular window
+struct dft_res dft(struct stream in, uint32_t N);
 
 //returns stream AFTER applying window function
 struct stream idft(struct dft_res dft_res);

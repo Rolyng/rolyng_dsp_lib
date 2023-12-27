@@ -29,10 +29,14 @@ int run(int argc, char *argv[]) {
     addComp(&sig, &sine);
     addComp(&sig, &sine2);
     struct stream res = gen_samplePeriod(&sig, sampleFreq);
-    struct dft_res d = dft(res, res.size, DFT_WINDOW_RECTANGLE);
     for (uint64_t i = 0; i < res.size; i++) {
         printf("Sample %lu = %f + %f i\n", i, creal(res.samples[i]), cimag(res.samples[i]));
     }
+    apply_window(&res, DFT_WINDOW_HANNING);
+    for (uint64_t i = 0; i < res.size; i++) {
+        printf("Windowed Sample %lu = %f + %f i\n", i, creal(res.samples[i]), cimag(res.samples[i]));
+    }
+    struct dft_res d = dft(res, res.size);
     for (uint64_t i = 0; i < res.size; i++) {
         printf("Dft comp freq %f + %f i = %f + %f i\n", creal(d.comp[i].freq), cimag(d.comp[i].freq),
                 creal(d.comp[i].ampl), cimag(d.comp[i].ampl));
