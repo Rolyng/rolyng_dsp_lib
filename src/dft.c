@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static complex double window_rectangle(__attribute__((unused)) complex double n, __attribute__((unused)) double N) {
-    return 1;
+static complex double window_rectangle(complex double n, __attribute__((unused)) double N) {
+    return n;
 }
 
 static complex double window_triangle(complex double n, double N) {
@@ -52,7 +52,6 @@ struct dft_res dft(struct stream in, uint32_t N) {
         comp.ampl = xm;
         comp.freq = baseFreq * m;
         res.comp[m] = comp;
-        //printf("Dft comp freq %f + %f i = %f + %f i\n", creal(comp.freq), cimag(comp.freq), creal(comp.ampl), cimag(comp.ampl));
     }
 
     return res;
